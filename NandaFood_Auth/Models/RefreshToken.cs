@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace NandaFood_Auth.Models;
 
-namespace NandaFood_Auth.Models;
-
-public partial class RefreshToken
+public sealed partial class RefreshToken
 {
     public string Id { get; set; } = null!;
 
@@ -11,7 +8,7 @@ public partial class RefreshToken
 
     public string? JwtId { get; set; }
 
-    public bool? IsRevoked { get; set; }
+    public bool IsRevoked { get; set; }
 
     public string? AccountsId { get; set; }
 
@@ -19,5 +16,5 @@ public partial class RefreshToken
 
     public DateTime? DateExpire { get; set; }
 
-    public virtual Account? Accounts { get; set; }
+    public Account? Accounts { get; set; }
 }

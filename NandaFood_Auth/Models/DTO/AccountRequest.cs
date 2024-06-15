@@ -12,5 +12,5 @@ public class AccountRequest
     [Required]
     public string UserSecret { get; set; }
     [Required]
-    public int UserRole { get; set; }
+    public string UserRole { get; set; }
 }

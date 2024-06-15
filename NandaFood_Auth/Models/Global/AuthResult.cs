@@ -1,4 +1,4 @@
-namespace NandaFood_Auth.Models;
+namespace NandaFood_Auth.Models.Global;
 
 public class AuthResult
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NandaFood_Auth.Models;
 
@@ -12,7 +10,7 @@ public partial class Account
 
     public string UserSecret { get; set; } = null!;
 
-    public int UserRole { get; set; }
+    public string UserRole { get; set; } = null!;
 
     public string FirstName { get; set; } = null!;
 
@@ -26,4 +24,6 @@ public partial class Account
     public string? JwtToken { get; set; }
 
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+    
+    public virtual Role UserRoleNavigation { get; set; } = null!;
 }

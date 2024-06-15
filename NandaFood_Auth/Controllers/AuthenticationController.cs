@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NandaFood_Auth.Data;
@@ -9,30 +10,50 @@ using NandaFood_Auth.Models.Global;
 
 namespace NandaFood_Auth.Controllers;
 
-public class AuthenticationController : ControllerBase
+[ApiController]
+[Route("api/[controller]")]
+public class AuthenticationController(
+    NandafoodContext context,
+    JwtTokenHandler jwtTokenHandler,
+    ICookieService cookieService)
+    : ControllerBase
 {
-    private readonly NandafoodContext _dbContext;
-    private readonly JwtTokenHandler _jwtTokenHandler;
-    
-    public AuthenticationController(NandafoodContext context, JwtTokenHandler jwtTokenHandler)
-    {
-        _dbContext = context;
-        _jwtTokenHandler = jwtTokenHandler;
-    }
-    
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] AccountRequest accountRequest)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest("Please provide all the required fields");
+            return BadRequest(new ApiMessage<object>()
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Status = "Bad Request",
+                Message = "Please provide all the required fields"
+            });
+        }
+        
+        Account? dbUser = await context.Accounts.FirstOrDefaultAsync(u => u.Username == accountRequest.Username);
+        
+        bool roleExists = await context.Roles.AnyAsync(r => r.RoleCode == accountRequest.UserRole);
+
+        if (dbUser != null)
+        {
+            return BadRequest(new ApiMessage<object>()
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Status = "Bad Request",
+                Message = $"Username {accountRequest.Username} already exist."
+            });
         }
 
-        var user = await _dbContext.Accounts.FirstOrDefaultAsync(u => u.Username == accountRequest.Username);
-
-        if (user != null)
+        if (!roleExists)
         {
-            return BadRequest($"Username = {accountRequest.Username} already exist.");
+            return BadRequest(new ApiMessage<object>()
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Status = "Bad Request",
+                Message = "Role is not available."
+            });
         }
         
         Account newUser = new Account()
@@ -46,10 +67,10 @@ public class AuthenticationController : ControllerBase
             CreatedDate = DateTime.Now
         };
             
-        _dbContext.Accounts.Add(newUser);
-        await _dbContext.SaveChangesAsync();
+        context.Accounts.Add(newUser);
+        await context.SaveChangesAsync();
             
-        return Ok(new APIMessage<object>()
+        return Ok(new ApiMessage<object>()
         {
             StatusCode = (int)HttpStatusCode.OK,
             Status = "OK",
@@ -58,39 +79,63 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest("Please provide all the required fields");
+            return BadRequest(new ApiMessage<object>()
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Status = "Bad Request",
+                Message = "Please provide all the required fields"
+            });
         }
 
-        var user = await _dbContext.Accounts.FirstOrDefaultAsync(u => u.Username == loginRequest.Username);
+        var dbUser = await context.Accounts.FirstOrDefaultAsync(u => u.Username == loginRequest.Username);
 
-        if (user != null)
+        if (dbUser != null)
         {
-            var userSecretHash = user.UserSecret;
+            var userSecretHash = dbUser.UserSecret;
             var verifySecret = PasswordHasher.VerifyPassword(loginRequest.UserSecret, userSecretHash);
 
             if (verifySecret)
             {
-                var token = await _jwtTokenHandler.GenerateJWTTokenAsync(user, null);
+                var result = await jwtTokenHandler.GenerateJwtTokenAsync(dbUser, null);
                 
-                return Ok(new APIMessage<object>()
+                cookieService.SetTokenCookie(Response, "jwtToken", result.Token);
+                cookieService.SetTokenCookie(Response, "refreshToken", result.RefreshToken);
+                
+                return Ok(new ApiMessage<object>()
                 {
                     StatusCode = (int)HttpStatusCode.OK,
                     Status = "OK",
                     Message = "Login Successful",
-                    Data = token
+                    Data = result
                 });
             }
         }
 
-        return Unauthorized(new APIMessage<object>()
+        return Unauthorized(new ApiMessage<object>()
         {
             StatusCode = (int)HttpStatusCode.Unauthorized,
             Status = "Unauthorized",
             Message = "Username or Password is incorrect!"
+        });
+    }
+    
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        string token = JwtTokenHandler.ExtractTokenFromRequest(HttpContext.Request);
+
+        jwtTokenHandler.RevokeToken(token);
+
+        return Ok(new ApiMessage<object>()
+        {
+            StatusCode = (int)HttpStatusCode.OK,
+            Status = "OK",
+            Message = "Logout successful"
         });
     }
     
@@ -99,11 +144,25 @@ public class AuthenticationController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest("Please provide all the required fields");
+            return BadRequest(new ApiMessage<object>()
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Status = "Bad Request",
+                Message = "Please provide all the required fields"
+            });
         }
 
-        var result = await _jwtTokenHandler.VerifyAndGenerateTokenAsync(refreshTokenRequest);
+        var result = await jwtTokenHandler.VerifyAndGenerateTokenAsync(refreshTokenRequest);
+        
+        cookieService.SetTokenCookie(Response, "jwtToken", result.Token);
+        cookieService.SetTokenCookie(Response, "refreshToken", result.RefreshToken);
 
-        return Ok(result);
+        return Ok(new ApiMessage<object>()
+        {
+            StatusCode = (int)HttpStatusCode.OK,
+            Status = "OK",
+            Message = "Token Refreshed",
+            Data = result
+        });
     }
 }

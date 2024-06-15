@@ -2,12 +2,13 @@ using System.Security.Cryptography;
 
 namespace NandaFood_Auth.Helper;
 
-public class PasswordHasher
+public static class PasswordHasher
 {
     private const int SaltSize = 16; // 16 bytes for salt
     private const int HashSize = 20; // 20 bytes for PBKDF2-HMAC-SHA-1 hash
     private const int Iterations = 10000; // Number of PBKDF2 iterations
 
+    [Obsolete("Obsolete")]
     public static string HashPassword(string password)
     {
         // Generate a random salt
@@ -29,6 +30,7 @@ public class PasswordHasher
         return base64Hash;
     }
     
+    [Obsolete("Obsolete")]
     public static bool VerifyPassword(string inputPassword, string hashedPassword)
     {
         // Convert hashed password from base64

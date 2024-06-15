@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NandaFood_Auth.Data;
 using NandaFood_Auth.Helper;
+using NandaFood_Auth.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,12 @@ var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<NandafoodContext>(options => options.UseSqlServer(connString), ServiceLifetime.Transient);
 
 builder.Services.AddScoped<JwtTokenHandler>();
+builder.Services.AddScoped<TokenRevocationMiddleware>();
 
 var tokenValidationParameters = new TokenValidationParameters()
 {
     ValidateIssuerSigningKey = true,
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWT:Secret"])),
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWT:Secret"] ?? string.Empty)),
     ValidateIssuer = true,
     ValidIssuer = builder.Configuration["JWT:Issuer"],
     ValidateAudience = true,
@@ -26,6 +28,7 @@ var tokenValidationParameters = new TokenValidationParameters()
 };
 
 builder.Services.AddSingleton(tokenValidationParameters);
+builder.Services.AddSingleton<ICookieService, CookieService>();
 
 // Add Authentication
 builder.Services.AddAuthentication(options =>
@@ -40,6 +43,9 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = tokenValidationParameters;
 });
 
+// Add Authorization
+builder.Services.AddAuthorization();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
@@ -47,6 +53,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<TokenRevocationMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

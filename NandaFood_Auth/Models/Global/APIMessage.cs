@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace NandaFood_Auth.Models.Global;
 
-public class APIMessage<T>
+public class ApiMessage<T>
 {
     [JsonPropertyName("statusCode")]
     public int? StatusCode { get; set; }
@@ -22,5 +22,5 @@ public class APIMessage<T>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public T? Data { get; set; }
 
-    public APIMessage() { }
+    public ApiMessage() { }
 }

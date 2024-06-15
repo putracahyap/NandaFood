@@ -17,6 +17,10 @@ public partial class NandafoodContext : DbContext
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+    
+    public virtual DbSet<RevokedToken> RevokedTokens { get; set; }
+    
+    public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,7 +44,10 @@ public partial class NandafoodContext : DbContext
             entity.Property(e => e.UpdatedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("updated_date");
-            entity.Property(e => e.UserRole).HasColumnName("user_role");
+            entity.Property(e => e.UserRole)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasColumnName("user_role");
             entity.Property(e => e.UserSecret)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -52,6 +59,11 @@ public partial class NandafoodContext : DbContext
             entity.Property(e => e.JwtToken)
                 .IsUnicode(false)
                 .HasColumnName("jwt_token");
+            
+            entity.HasOne(d => d.UserRoleNavigation).WithMany(p => p.Accounts)
+                .HasForeignKey(d => d.UserRole)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Accounts_Roles");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>
@@ -83,6 +95,35 @@ public partial class NandafoodContext : DbContext
             entity.HasOne(d => d.Accounts).WithMany(p => p.RefreshTokens)
                 .HasForeignKey(d => d.AccountsId)
                 .HasConstraintName("FK_RefreshToken_Accounts");
+        });
+        
+        modelBuilder.Entity<RevokedToken>(entity =>
+        {
+            entity.ToTable("RevokedToken");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("id");
+            entity.Property(e => e.RevocationDate)
+                .HasColumnType("datetime")
+                .HasColumnName("revocation_date");
+            entity.Property(e => e.Token)
+                .IsUnicode(false)
+                .HasColumnName("token");
+        });
+        
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.RoleCode);
+
+            entity.Property(e => e.RoleCode)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasColumnName("role_code");
+            entity.Property(e => e.Description)
+                .HasMaxLength(20)
+                .HasColumnName("description");
         });
     }
 }
