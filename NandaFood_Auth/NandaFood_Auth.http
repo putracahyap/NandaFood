@@ -1,0 +1,6 @@
+@NandaFood_Auth_HostAddress = http://localhost:5142
+
+GET {{NandaFood_Auth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
