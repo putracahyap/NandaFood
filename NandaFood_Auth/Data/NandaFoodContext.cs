@@ -49,6 +49,9 @@ public partial class NandafoodContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("username");
+            entity.Property(e => e.JwtToken)
+                .IsUnicode(false)
+                .HasColumnName("jwt_token");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>
