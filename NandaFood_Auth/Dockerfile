@@ -1,4 +1,4 @@
-# Use the .NET 6.0 SDK image for building the app
+# Use the .NET 8.0 SDK image for building the app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
@@ -14,4 +14,5 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "NandaFood_Auth.dll"]
+EXPOSE 80
+ENTRYPOINT ["dotnet", "NandaFood_Auth.dll", "--server.urls", "https://+:8080"]
