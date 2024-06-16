@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NandaFood_Auth.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
+[ApiController]
 public class HomeController : ControllerBase
 {
     public HomeController()

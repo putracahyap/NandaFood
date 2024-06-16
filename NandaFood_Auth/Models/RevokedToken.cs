@@ -1,6 +1,6 @@
 ﻿namespace NandaFood_Auth.Models;
 
-public partial class RevokedToken
+public class RevokedToken
 {
     public string Id { get; set; } = null!;
 

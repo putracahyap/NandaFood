@@ -2,7 +2,7 @@
 
 namespace NandaFood_Auth.Models;
 
-public partial class Account
+public sealed class Account
 {
     public string Id { get; set; } = null!;
 
@@ -20,10 +20,9 @@ public partial class Account
 
     public DateTime? UpdatedDate { get; set; }
 
-    [Column(TypeName = "varchar(max)")]
     public string? JwtToken { get; set; }
 
-    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
-    
-    public virtual Role UserRoleNavigation { get; set; } = null!;
+    public bool IsLogin { get; set; }
+
+    public Role UserRoleNavigation { get; set; } = null!;
 }

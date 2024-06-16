@@ -1,4 +1,4 @@
-namespace NandaFood_Auth.Helper;
+namespace NandaFood_Auth.Services;
 
 public interface ICookieService
 {

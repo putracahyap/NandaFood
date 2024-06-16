@@ -5,14 +5,15 @@ using Microsoft.IdentityModel.Tokens;
 using NandaFood_Auth.Data;
 using NandaFood_Auth.Helper;
 using NandaFood_Auth.Middlewares;
+using NandaFood_Auth.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // register DbContext
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<NandafoodContext>(options => options.UseSqlServer(connString), ServiceLifetime.Transient);
+builder.Services.AddDbContext<NandaFoodAuthContext>(options => options.UseSqlServer(connString), ServiceLifetime.Transient);
 
-builder.Services.AddScoped<JwtTokenHandler>();
+builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<TokenRevocationMiddleware>();
 
 var tokenValidationParameters = new TokenValidationParameters()
@@ -52,6 +53,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    string strTimespan = "1728000";
+    options.AddPolicy("AllowAnyOrigin",
+        corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetPreflightMaxAge(TimeSpan.Parse(strTimespan)));
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<TokenRevocationMiddleware>();
@@ -64,6 +75,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAnyOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

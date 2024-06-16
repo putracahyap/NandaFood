@@ -8,10 +8,10 @@ using NandaFood_Auth.Models;
 using NandaFood_Auth.Models.DTO;
 using NandaFood_Auth.Models.Global;
 
-namespace NandaFood_Auth.Helper;
+namespace NandaFood_Auth.Services;
 
-public class JwtTokenHandler(
-    NandafoodContext context,
+public class JwtTokenService(
+    NandaFoodAuthContext context,
     IConfiguration configuration,
     TokenValidationParameters tokenValidationParameters)
 {
@@ -35,59 +35,56 @@ public class JwtTokenHandler(
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 
         var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+        var newRefreshToken = string.Empty;
 
-        if (refreshToken != null)
+        if (refreshToken == null)
         {
-            var refreshTokenResponse = new AuthResult()
+            var newRefreshTokenData = new RefreshToken()
             {
-                Token = jwtToken,
-                RefreshToken = refreshToken,
-                Expired = token.ValidTo,
+                Id = Guid.NewGuid().ToString(),
+                Token = Guid.NewGuid() + "-" + Guid.NewGuid(),
+                JwtId = token.Id,
+                IsRevoked = false,
+                AccountsId = existingUser.Id,
+                DateAdded = DateTime.Now,
+                DateExpire = DateTime.Now.AddMonths(1),
             };
 
-            return refreshTokenResponse;
+            newRefreshToken = newRefreshTokenData.Token;
+        
+            await context.RefreshTokens.AddAsync(newRefreshTokenData);
         }
-
-        var newRefreshToken = new RefreshToken()
-        {
-            Id = Guid.NewGuid().ToString(),
-            JwtId = token.Id,
-            IsRevoked = false,
-            AccountsId = existingUser.Id,
-            DateAdded = DateTime.Now,
-            DateExpire = DateTime.Now.AddMonths(6),
-            Token = Guid.NewGuid()+"-"+Guid.NewGuid()
-        };
-
-        var dbUser = await context.Accounts.FirstOrDefaultAsync(x => x.Username == existingUser.Username);
+        
+        var dbUser = await context.Accounts.FirstOrDefaultAsync(x => x.Id == existingUser.Id);
+        
         if (dbUser != null)
         {
             dbUser.JwtToken = jwtToken;
+            dbUser.IsLogin = true;
         }
         
-        await context.RefreshTokens.AddAsync(newRefreshToken);
-        await context.SaveChangesAsync();
-
         var authResponse = new AuthResult()
         {
             Token = jwtToken,
-            RefreshToken = newRefreshToken.Token,
+            RefreshToken = refreshToken ?? newRefreshToken,
             Expired = token.ValidTo,
         };
+        
+        await context.SaveChangesAsync();
 
         return authResponse;
     }
     
-    public async Task<AuthResult> VerifyAndGenerateTokenAsync(RefreshTokenRequest refreshTokenRequest)
+    public async Task<AuthResult> VerifyAndGenerateTokenAsync(RefreshTokenRequest refreshTokenRequest, string jwtToken)
     {
         var jwtTokenHandler = new JwtSecurityTokenHandler();
         var storedToken =
             await context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == refreshTokenRequest.RefreshToken);
-        var existingUser = await context.Accounts.FirstOrDefaultAsync(x => x.JwtToken == refreshTokenRequest.JwtToken);
+        var existingUser = await context.Accounts.FirstOrDefaultAsync(x => x.JwtToken == jwtToken);
     
         try
         {
-            jwtTokenHandler.ValidateToken(refreshTokenRequest.JwtToken, tokenValidationParameters,
+            jwtTokenHandler.ValidateToken(jwtToken, tokenValidationParameters,
                 out var validatedToken);
     
             return await GenerateJwtTokenAsync(existingUser, refreshTokenRequest.RefreshToken);
@@ -103,33 +100,6 @@ public class JwtTokenHandler(
         }
     }
     
-    public ClaimsPrincipal ValidateToken(string token)
-    {
-        try
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            // Validate token
-            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
-
-            // Optionally, perform additional validation or checks here
-            
-            return principal;
-        }
-        catch (Exception ex)
-        {
-            // Handle validation errors
-            throw new SecurityTokenException("Token validation failed", ex);
-        }
-    }
-
-    public string ReadToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var jwtToken = tokenHandler.ReadJwtToken(token);
-        return jwtToken.Id;
-    }
-    
     public void RevokeToken(string token)
     {
         var revokedToken = new RevokedToken
@@ -142,6 +112,7 @@ public class JwtTokenHandler(
         var dbUser = context.Accounts.FirstOrDefault(x => x.JwtToken == token);
         var refreshToken = context.RefreshTokens.FirstOrDefault(y => y.AccountsId == dbUser.Id);
 
+        dbUser.IsLogin = false;
         refreshToken.IsRevoked = true;
 
         context.RevokedTokens.Add(revokedToken);

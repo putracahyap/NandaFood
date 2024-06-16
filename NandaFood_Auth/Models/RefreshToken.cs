@@ -1,6 +1,6 @@
 ﻿namespace NandaFood_Auth.Models;
 
-public sealed partial class RefreshToken
+public class RefreshToken
 {
     public string Id { get; set; } = null!;
 
@@ -15,6 +15,4 @@ public sealed partial class RefreshToken
     public DateTime? DateAdded { get; set; }
 
     public DateTime? DateExpire { get; set; }
-
-    public Account? Accounts { get; set; }
 }

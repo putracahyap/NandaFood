@@ -7,14 +7,15 @@ using NandaFood_Auth.Helper;
 using NandaFood_Auth.Models;
 using NandaFood_Auth.Models.DTO;
 using NandaFood_Auth.Models.Global;
+using NandaFood_Auth.Services;
 
 namespace NandaFood_Auth.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AuthenticationController(
-    NandafoodContext context,
-    JwtTokenHandler jwtTokenHandler,
+    NandaFoodAuthContext context,
+    JwtTokenService jwtTokenService,
     ICookieService cookieService)
     : ControllerBase
 {
@@ -64,7 +65,8 @@ public class AuthenticationController(
             UserRole = accountRequest.UserRole,
             FirstName = accountRequest.FirstName,
             LastName = accountRequest.LastName,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.Now,
+            IsLogin = false
         };
             
         context.Accounts.Add(newUser);
@@ -101,7 +103,7 @@ public class AuthenticationController(
 
             if (verifySecret)
             {
-                var result = await jwtTokenHandler.GenerateJwtTokenAsync(dbUser, null);
+                var result = await jwtTokenService.GenerateJwtTokenAsync(dbUser, null);
                 
                 cookieService.SetTokenCookie(Response, "jwtToken", result.Token);
                 cookieService.SetTokenCookie(Response, "refreshToken", result.RefreshToken);
@@ -127,9 +129,9 @@ public class AuthenticationController(
     [HttpPost("logout")]
     public IActionResult Logout()
     {
-        string token = JwtTokenHandler.ExtractTokenFromRequest(HttpContext.Request);
+        string token = JwtTokenService.ExtractTokenFromRequest(HttpContext.Request);
 
-        jwtTokenHandler.RevokeToken(token);
+        jwtTokenService.RevokeToken(token);
 
         return Ok(new ApiMessage<object>()
         {
@@ -151,8 +153,10 @@ public class AuthenticationController(
                 Message = "Please provide all the required fields"
             });
         }
+        
+        string token = JwtTokenService.ExtractTokenFromRequest(HttpContext.Request);
 
-        var result = await jwtTokenHandler.VerifyAndGenerateTokenAsync(refreshTokenRequest);
+        var result = await jwtTokenService.VerifyAndGenerateTokenAsync(refreshTokenRequest, token);
         
         cookieService.SetTokenCookie(Response, "jwtToken", result.Token);
         cookieService.SetTokenCookie(Response, "refreshToken", result.RefreshToken);

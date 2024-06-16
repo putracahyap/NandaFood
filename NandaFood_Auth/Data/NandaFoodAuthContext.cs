@@ -3,24 +3,24 @@ using NandaFood_Auth.Models;
 
 namespace NandaFood_Auth.Data;
 
-public partial class NandafoodContext : DbContext
+public class NandaFoodAuthContext : DbContext
 {
-    public NandafoodContext()
+    public NandaFoodAuthContext()
     {
     }
 
-    public NandafoodContext(DbContextOptions<NandafoodContext> options)
+    public NandaFoodAuthContext(DbContextOptions<NandaFoodAuthContext> options)
         : base(options)
     {
     }
 
-    public virtual DbSet<Account> Accounts { get; set; }
+    public virtual DbSet<Account> Accounts { get; init; }
 
-    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+    public virtual DbSet<RefreshToken> RefreshTokens { get; init; }
     
-    public virtual DbSet<RevokedToken> RevokedTokens { get; set; }
+    public virtual DbSet<RevokedToken> RevokedTokens { get; init; }
     
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<Role> Roles { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +37,10 @@ public partial class NandafoodContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("first_name");
+            entity.Property(e => e.IsLogin).HasColumnName("is_login");
+            entity.Property(e => e.JwtToken)
+                .IsUnicode(false)
+                .HasColumnName("jwt_token");
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -56,10 +60,7 @@ public partial class NandafoodContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("username");
-            entity.Property(e => e.JwtToken)
-                .IsUnicode(false)
-                .HasColumnName("jwt_token");
-            
+
             entity.HasOne(d => d.UserRoleNavigation).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.UserRole)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -91,10 +92,6 @@ public partial class NandafoodContext : DbContext
             entity.Property(e => e.Token)
                 .IsUnicode(false)
                 .HasColumnName("token");
-
-            entity.HasOne(d => d.Accounts).WithMany(p => p.RefreshTokens)
-                .HasForeignKey(d => d.AccountsId)
-                .HasConstraintName("FK_RefreshToken_Accounts");
         });
         
         modelBuilder.Entity<RevokedToken>(entity =>

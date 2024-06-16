@@ -1,6 +1,6 @@
 ﻿namespace NandaFood_Auth.Models;
 
-public sealed partial class Role
+public sealed class Role
 {
     public string RoleCode { get; set; } = null!;
 
