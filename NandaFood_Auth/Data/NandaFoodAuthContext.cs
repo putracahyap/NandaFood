@@ -38,9 +38,6 @@ public class NandaFoodAuthContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("first_name");
             entity.Property(e => e.IsLogin).HasColumnName("is_login");
-            entity.Property(e => e.JwtToken)
-                .IsUnicode(false)
-                .HasColumnName("jwt_token");
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .IsUnicode(false)

@@ -20,8 +20,6 @@ public sealed class Account
 
     public DateTime? UpdatedDate { get; set; }
 
-    public string? JwtToken { get; set; }
-
     public bool IsLogin { get; set; }
 
     public Role UserRoleNavigation { get; set; } = null!;

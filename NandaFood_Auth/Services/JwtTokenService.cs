@@ -59,7 +59,6 @@ public class JwtTokenService(
         
         if (dbUser != null)
         {
-            dbUser.JwtToken = jwtToken;
             dbUser.IsLogin = true;
         }
         
@@ -80,7 +79,8 @@ public class JwtTokenService(
         var jwtTokenHandler = new JwtSecurityTokenHandler();
         var storedToken =
             await context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == refreshTokenRequest.RefreshToken);
-        var existingUser = await context.Accounts.FirstOrDefaultAsync(x => x.JwtToken == jwtToken);
+        var loggedInUsername = GetUsernameFromToken(jwtToken);
+        var existingUser = await context.Accounts.FirstOrDefaultAsync(x => x.Username == loggedInUsername);
     
         try
         {
@@ -109,7 +109,8 @@ public class JwtTokenService(
             RevocationDate = DateTime.Now
         };
 
-        var dbUser = context.Accounts.FirstOrDefault(x => x.JwtToken == token);
+        var loggedInUsername = GetUsernameFromToken(token);
+        var dbUser = context.Accounts.FirstOrDefault(x => x.Username == loggedInUsername);
         var refreshToken = context.RefreshTokens.FirstOrDefault(y => y.AccountsId == dbUser.Id);
 
         dbUser.IsLogin = false;
