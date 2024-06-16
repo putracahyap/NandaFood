@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NandaFood_Auth", "NandaFood_Auth\NandaFood_Auth.csproj", "{0F907EAA-8AFB-421A-AFC8-ADF26E372B09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NandaFood_Menu", "NandaFood_Menu\NandaFood_Menu.csproj", "{24D18E76-30C1-4A53-B638-21E88CDFD717}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{0F907EAA-8AFB-421A-AFC8-ADF26E372B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F907EAA-8AFB-421A-AFC8-ADF26E372B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F907EAA-8AFB-421A-AFC8-ADF26E372B09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,21 +1,21 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NandaFood_Auth.Controllers;
+namespace NandaFood_Menu.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
-public class HomeController : ControllerBase
+[Route("api/[controller]")]
+public class MenuController : ControllerBase
 {
-    public HomeController()
+    public MenuController()
     {
             
     }
-
+    
     [HttpGet]
     [Authorize(Roles = "NFA")]
     public IActionResult Get()
     {
-        return Ok("Welcome to HomeController");
+        return Ok("Welcome to MenuController");
     }
 }
