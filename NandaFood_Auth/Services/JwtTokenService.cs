@@ -129,4 +129,14 @@ public class JwtTokenService(
         
         return "";
     }
+    
+    public static string GetUsernameFromToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+
+        var username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
+
+        return username;
+    }
 }
