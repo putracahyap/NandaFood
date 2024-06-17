@@ -51,8 +51,8 @@ public class AccountController(NandaFoodAuthContext context) : ControllerBase
         }
         
         string token = JwtTokenService.ExtractTokenFromRequest(HttpContext.Request);
-        var loggedInUsername = JwtTokenService.GetUsernameFromToken(token);
-        Account? dbUser = await context.Accounts.FirstOrDefaultAsync(u => u.Username == loggedInUsername);
+        var tokenDetails = JwtTokenService.GetTokenDetails(token);
+        Account? dbUser = await context.Accounts.FirstOrDefaultAsync(u => u.Username == tokenDetails.Item1);
         
         if (dbUser == null)
         {
@@ -60,7 +60,7 @@ public class AccountController(NandaFoodAuthContext context) : ControllerBase
             {
                 StatusCode = (int)HttpStatusCode.BadRequest,
                 Status = "Bad Request",
-                Message = $"Username {loggedInUsername} does not exist."
+                Message = $"Username {tokenDetails.Item1} does not exist."
             });
         }
     

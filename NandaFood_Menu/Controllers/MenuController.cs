@@ -2,11 +2,11 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NandaFood_Auth.Models.Global;
 using NandaFood_Auth.Services;
 using NandaFood_Menu.Data;
 using NandaFood_Menu.Models;
 using NandaFood_Menu.Models.DTO;
-using NandaFood_Menu.Models.Global;
 
 namespace NandaFood_Menu.Controllers;
 
@@ -65,7 +65,7 @@ public class MenuController(NandaFoodMenuContext context, JwtTokenService jwtTok
         }
         
         string token = JwtTokenService.ExtractTokenFromRequest(HttpContext.Request);
-        var loggedInUsername = JwtTokenService.GetUsernameFromToken(token);
+        var tokenDetails = JwtTokenService.GetTokenDetails(token);
 
         FoodMenu newMenu = new FoodMenu()
         {
@@ -73,7 +73,7 @@ public class MenuController(NandaFoodMenuContext context, JwtTokenService jwtTok
             Menu = addMenuRequest.Menu,
             Price = addMenuRequest.Price,
             Status = false,
-            CreatedBy = loggedInUsername,
+            CreatedBy = tokenDetails.Item1,
             CreatedDate = DateTime.Now
         };
             
@@ -104,7 +104,7 @@ public class MenuController(NandaFoodMenuContext context, JwtTokenService jwtTok
         
         FoodMenu? dbMenu = await context.FoodMenu.FirstOrDefaultAsync(u => u.Id == updateMenuRequest.Id);
         string token = JwtTokenService.ExtractTokenFromRequest(HttpContext.Request);
-        var loggedInUsername = JwtTokenService.GetUsernameFromToken(token);
+        var tokenDetails = JwtTokenService.GetTokenDetails(token);
         
         if (dbMenu != null)
         {
@@ -123,7 +123,7 @@ public class MenuController(NandaFoodMenuContext context, JwtTokenService jwtTok
             dbMenu.Menu = updateMenuRequest.Menu ?? dbMenu.Menu;
             dbMenu.Price = updateMenuRequest.Price ?? dbMenu.Price;
             dbMenu.Status = updateMenuRequest.Status ?? dbMenu.Status;
-            dbMenu.UpdatedBy = loggedInUsername;
+            dbMenu.UpdatedBy = tokenDetails.Item1;
             dbMenu.UpdatedDate = DateTime.Now;
             
             await context.SaveChangesAsync();

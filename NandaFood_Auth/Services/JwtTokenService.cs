@@ -21,6 +21,7 @@ public class JwtTokenService(
         {
             new Claim(JwtRegisteredClaimNames.Sub, existingUser.Id),
             new Claim(JwtRegisteredClaimNames.UniqueName, existingUser.Username),
+            new Claim(JwtRegisteredClaimNames.Name, existingUser.FirstName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Role, existingUser.UserRole)
         };
@@ -79,8 +80,8 @@ public class JwtTokenService(
         var jwtTokenHandler = new JwtSecurityTokenHandler();
         var storedToken =
             await context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == refreshTokenRequest.RefreshToken);
-        var loggedInUsername = GetUsernameFromToken(jwtToken);
-        var existingUser = await context.Accounts.FirstOrDefaultAsync(x => x.Username == loggedInUsername);
+        var tokenDetails = GetTokenDetails(jwtToken);
+        var existingUser = await context.Accounts.FirstOrDefaultAsync(x => x.Username == tokenDetails.Item1);
     
         try
         {
@@ -109,8 +110,8 @@ public class JwtTokenService(
             RevocationDate = DateTime.Now
         };
 
-        var loggedInUsername = GetUsernameFromToken(token);
-        var dbUser = context.Accounts.FirstOrDefault(x => x.Username == loggedInUsername);
+        var tokenDetails = GetTokenDetails(token);
+        var dbUser = context.Accounts.FirstOrDefault(x => x.Username == tokenDetails.Item1);
         var refreshToken = context.RefreshTokens.FirstOrDefault(y => y.AccountsId == dbUser.Id);
 
         dbUser.IsLogin = false;
@@ -131,13 +132,14 @@ public class JwtTokenService(
         return "";
     }
     
-    public static string GetUsernameFromToken(string token)
+    public static (string, string) GetTokenDetails(string token)
     {
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(token);
 
         var username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
+        var firstName = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name).Value;
 
-        return username;
+        return (username,firstName);
     }
 }
