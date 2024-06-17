@@ -127,6 +127,7 @@ public class AuthenticationController(
     }
     
     [HttpPost("logout")]
+    [Authorize]
     public IActionResult Logout()
     {
         string token = JwtTokenService.ExtractTokenFromRequest(HttpContext.Request);
@@ -142,6 +143,7 @@ public class AuthenticationController(
     }
     
     [HttpPost("refresh-token")]
+    [Authorize]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest refreshTokenRequest)
     {
         if (!ModelState.IsValid)

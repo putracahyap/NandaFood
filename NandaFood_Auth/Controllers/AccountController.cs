@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NandaFood_Auth.Data;
@@ -14,6 +15,7 @@ namespace NandaFood_Auth.Controllers;
 public class AccountController(NandaFoodAuthContext context) : ControllerBase
 {
     [HttpGet("get-all-accounts")]
+    [Authorize]
     public async Task<IActionResult?> GetAllAccounts()
     {
         IEnumerable<Account> results = await context.Accounts.ToListAsync();
@@ -38,6 +40,7 @@ public class AccountController(NandaFoodAuthContext context) : ControllerBase
     }
     
     [HttpPut("update")]
+    [Authorize]
     public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountRequest updateAccountRequest)
     {
         if (!ModelState.IsValid)

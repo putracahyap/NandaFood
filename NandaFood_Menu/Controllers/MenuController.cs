@@ -12,9 +12,10 @@ namespace NandaFood_Menu.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class MenuController(NandaFoodMenuContext context, JwtTokenService jwtTokenService) : ControllerBase
+public class MenuController(NandaFoodMenuContext context) : ControllerBase
 {
     [HttpGet("get-all-menu")]
+    [Authorize]
     public async Task<IActionResult?> GetAllMenu()
     {
         IEnumerable<FoodMenu> results = await context.FoodMenu.ToListAsync();
