@@ -1,0 +1,598 @@
+{
+	"info": {
+		"_postman_id": "a39ab1bb-8e7d-4caf-9429-6af455bbf079",
+		"name": "NandaFood",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29500730"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Putra\",\n  \"lastName\": \"Cahya Purnama\",\n  \"username\": \"putracp2\",\n  \"userSecret\": \"coba123\",\n  \"userRole\": \"NFM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/authentication/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authentication",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"putracp2\",\n  \"userSecret\": \"coba123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/authentication/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RefreshToken",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYWEwNzZmMi04ZWQzLTRkNGItYTQzOS0yZWZkZmMzNzVhNjIiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwianRpIjoiYzU1NTBmOTYtMmUzMy00YzE5LWJkZDAtMGM0MWI2ZmYzZGUzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjAxNDgxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.At6xHm3mgTNiOpOl-etdlTgs_ibjpse73FRlpUFYGEM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"f3db5e8e-621d-437f-8a3a-75e60bc84faa-934b1176-fc6a-4f13-a188-a8ddc0ddda1f\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5142/api/authentication/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5142",
+							"path": [
+								"api",
+								"authentication",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiY2JhMWQ0YTMtZGUxNC00YjE1LWI4NTktNTI3NzQxMTUwOGU3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI1MTYwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.r8YU4IncFdB1E7f6VnqFiVzDLPH2kA2WNipD2-sV06I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/authentication/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authentication",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiYTI4NmJiYWEtNThlYy00ZGE4LWFiOTYtMGU5YWFjN2FjNzIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZNIiwiZXhwIjoxNzE4NjI1MzA4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.bFzP4BwYTSmH0FmeVboshbs71-ySbcIhpJySZ3nHkN8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userRole\": \"NFA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/account/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Accounts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiZWNkMzQ1MmQtN2E2Ny00OWQ1LWEyMGQtMWYzMTU2MzJlNzk5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI1NDAwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.ZN0gRGmD7KHagIygPnU_8dfxh83xnY1vu5BaSQeCriU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/account/get-all-accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"get-all-accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FoodMenu",
+			"item": [
+				{
+					"name": "Update Menu",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGY3Nzc3OC04YzA5LTQxOTAtODYzMy01ZTEzODBkNTAwNWYiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AyIiwibmFtZSI6IlB1dHJhMiIsImp0aSI6IjU2YzE2MGZiLTEzNTktNDcyYy05MjExLTgzMWZhNzJlMWY0MyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ik5GTSIsImV4cCI6MTcxODYyNjU0NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQyIiwiYXVkIjoidXNlciJ9.U_0LNtt2nSssgm0FjPxJBjQsSgbwWoYS4OOlpKaJBP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"4ebf6384-0d3b-4e6e-bb0d-9f300be69015\",\n    \"menu\": \"bebek goreng\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/Menu/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"Menu",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Menu",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiMjhlNDg0NDctNWExZC00YTA1LTg5YzgtOWFiZGY5YjcwZjIwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI2MzcyLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.h5kaXy4ILCibc0-9CepJrmOz5vr5yP5CO6twTSwL-vg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/Menu/get-all-menu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"Menu",
+								"get-all-menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Menu",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiMmQwYzQxMGMtYTMxNC00NGI3LWExYWUtMjNjMGFkMTA4YmY1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI2MzE0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.sXcYq_yO4nd12qhht6kOr2g80tkrrdpMZGCFToPRhbE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"menu\": \"sate ayam + nasi\",\n    \"price\": \"25000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/Menu/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"Menu",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FoodOrder",
+			"item": [
+				{
+					"name": "Add Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGY3Nzc3OC04YzA5LTQxOTAtODYzMy01ZTEzODBkNTAwNWYiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AyIiwibmFtZSI6IlB1dHJhMiIsImp0aSI6IjY5NjlkZjIxLTJmNzItNDY0Zi05YTE2LTkzNmExYTJiNzUzMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ik5GTSIsImV4cCI6MTcxODYyNjY1OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQyIiwiYXVkIjoidXNlciJ9.PceiiKx0MUy7biNRFwzsF0WXjpuTsBGhuAvWOD-O8Ys",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"menu\": \"nasi gudeg\",\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/order/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiMGIwNGMxNzctZGJjNC00MWYzLWIzZmItYWRlMjJjYmEwZDM1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI2NzIzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.9nwGZIZXnxksnsYLxK-Lk_k2Z7W6PAqeMpkJYvBJ01A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/order/get-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order By Menu",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiOWExMjFhYzMtZTNhYS00ZTIwLThjOGItYjMyMTVlNDQzZGRmIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI2NzgwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.WN5R3PjsnV1RGlBdjT0doD2OAYmdZ2Zx0DMGnmXe0e8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/order/check-menu/?menu=nasi gudeg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"check-menu",
+								""
+							],
+							"query": [
+								{
+									"key": "menu",
+									"value": "nasi gudeg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGY3Nzc3OC04YzA5LTQxOTAtODYzMy01ZTEzODBkNTAwNWYiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AyIiwibmFtZSI6IlB1dHJhMiIsImp0aSI6IjgyMTFiZjQ1LWNmZGItNGM0YS1iYzQyLWIxODMyNWIwNTAzYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ik5GTSIsImV4cCI6MTcxODYyNjgyMCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQyIiwiYXVkIjoidXNlciJ9.wWR9Bcfb6ySJIoB4WSZlnvd1_PNdybmcpe2nNNZbYGA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/order/check",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGY3Nzc3OC04YzA5LTQxOTAtODYzMy01ZTEzODBkNTAwNWYiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AyIiwibmFtZSI6IlB1dHJhMiIsImp0aSI6IjgyMTFiZjQ1LWNmZGItNGM0YS1iYzQyLWIxODMyNWIwNTAzYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ik5GTSIsImV4cCI6MTcxODYyNjgyMCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQyIiwiYXVkIjoidXNlciJ9.wWR9Bcfb6ySJIoB4WSZlnvd1_PNdybmcpe2nNNZbYGA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"e92e07e0-c25f-418c-b326-1596b53aa0d7\",\n    \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/order/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzMwZWI0MC1kOGM5LTQ3OTktOTI3Ni1mYmI1ZGRlNDlmNGUiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AxIiwibmFtZSI6IlB1dHJhIiwianRpIjoiOTU3OWZiZGEtNWM2Mi00Y2Y4LWI4YmEtZjQ4N2E0MjRhNDk4IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTkZBIiwiZXhwIjoxNzE4NjI2ODk2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDIiLCJhdWQiOiJ1c2VyIn0.Y14yHc0iONiqWP5EwSG_Gf77ABTWVVltuefEGmfbEcM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"e92e07e0-c25f-418c-b326-1596b53aa0d7\",\n    \"status\": \"Done\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/order/update-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"update-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGY3Nzc3OC04YzA5LTQxOTAtODYzMy01ZTEzODBkNTAwNWYiLCJ1bmlxdWVfbmFtZSI6InB1dHJhY3AyIiwibmFtZSI6IlB1dHJhMiIsImp0aSI6ImU4YzIzNzkzLWFhZTQtNDgyNy1iODkzLWUzNGE5Mzk2MmY5MyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ik5GTSIsImV4cCI6MTcxODYyNzEwNSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQyIiwiYXVkIjoidXNlciJ9.8yjSB0nW5xw0y6EuxwiPCRyM1uFWvleEUSrBNlZgpmM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"e92e07e0-c25f-418c-b326-1596b53aa0d7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/order/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"order",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
