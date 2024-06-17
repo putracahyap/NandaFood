@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NandaFood_Auth", "NandaFood
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NandaFood_Menu", "NandaFood_Menu\NandaFood_Menu.csproj", "{24D18E76-30C1-4A53-B638-21E88CDFD717}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NandaFood_Order", "NandaFood_Order\NandaFood_Order.csproj", "{79E84890-CA49-483F-BA1A-DE7B6C1EE261}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24D18E76-30C1-4A53-B638-21E88CDFD717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79E84890-CA49-483F-BA1A-DE7B6C1EE261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E84890-CA49-483F-BA1A-DE7B6C1EE261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E84890-CA49-483F-BA1A-DE7B6C1EE261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E84890-CA49-483F-BA1A-DE7B6C1EE261}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
