@@ -1,5 +1,11 @@
 CREATE DATABASE NANDAFOOD
 
+CREATE TABLE [dbo].[Roles] (
+    [role_code]   VARCHAR (5)   NOT NULL,
+    [description] NVARCHAR (20) NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED ([role_code] ASC)
+);
+
 CREATE TABLE [dbo].[Accounts] (
     [id]           VARCHAR (50) NOT NULL,
     [username]     VARCHAR (50) NOT NULL,
@@ -30,12 +36,6 @@ CREATE TABLE [dbo].[RevokedToken] (
     [token]           VARCHAR (MAX) NOT NULL,
     [revocation_date] DATETIME      NOT NULL,
     CONSTRAINT [PK_RevokedToken] PRIMARY KEY CLUSTERED ([id] ASC)
-);
-
-CREATE TABLE [dbo].[Roles] (
-    [role_code]   VARCHAR (5)   NOT NULL,
-    [description] NVARCHAR (20) NULL,
-    CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED ([role_code] ASC)
 );
 
 INSERT INTO Roles (role_code, [description]) VALUES ('NFA', 'Admin'), ('NFM', 'Member')
